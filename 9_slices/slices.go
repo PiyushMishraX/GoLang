@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"slices"
+	// "slices"
 )
 
 // slice --> dynamic array
@@ -94,12 +94,17 @@ func main(){
 
 
 	// slice // package
-	var nums1 = []int{1,2,3}
-	var nums2 = []int{1,2,3,4}
+	// var nums1 = []int{1,2,3}
+	// var nums2 = []int{1,2,3,4}
 
-	fmt.Println(slices.Equal(nums1, nums2))
+	// fmt.Println(slices.Equal(nums1, nums2))
+
+
 	
-	
+	// 2D SLICES
+
+	var nums = [][]int{{1,2,3},{4,5,6}}
+	fmt.Println(nums)
 
 
 
