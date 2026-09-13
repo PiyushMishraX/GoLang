@@ -5,92 +5,97 @@ import (
 	"time"
 )
 
+// "fmt"
+// "time"
+
+// go do not have classes so we use structure
 
 // order struct
+// type order struct {
+// 	id string
+// 	amount float32
+// 	status string
+// 	createAt time.Time // nanosecond precision
+// } // used via instance creation
 
-type customer struct {
-	name  string
-	phone string
-}
-
-// composition
-type order struct {
-	id        string
-	amount    float32
-	status    string
-	createdAt time.Time // nanosecond precision
-	customer
-}
-
-
-// func newOrder(id string, amount float32, status string) *order {
-// 	// initial setup goes here...
+// func main(){
+// 	// var order order =
+//
 // 	myOrder := order{
-// 		id:     id,
-// 		amount: amount,
-// 		status: status,
+// 		id: "11",
+// 		amount: 500.00,
+// 		status: "received",
 // 	}
-// 	return &myOrder
+//
+// 	// fmt.Println("Order struct", myOrder)
+//
+// 	myOrder.createAt = time.Now()
+// 	// fmt.Println("Order struct", myOrder)
+//
+// 	// fmt.Println(myOrder.status)
+//
+// 	myOrder2 := order{
+// 		id: "12",
+// 		status: "delivered",
+// 		amount: 100,
+// 		createAt: time.Now(),
+// 	}
+//
+// 	myOrder.status = "paid"
+//
+// 	fmt.Println("Order struct", myOrder)
+// 	fmt.Println("Order struct", myOrder2)
+//
 // }
 
-// // receiver type
-// func (o *order) changeStatus(status string) {
-// 	o.status = status
-// }
+/* Adding methods in struct --> so they work as object */
 
-// func (o order) getAmount() float32 {
-// 	return o.amount
-// }
+type order struct {
+	id string
+	amount float32
+	status string
+	createAt time.Time 
+}
+
+// receiver type
+// func (o order) statusChange(status string) {
+func (o *order) statusChange(status string) {
+	// function attached to struct
+
+	o.status = status // struct derefrence automatically
+}
+
+// for modification using pointer is required but getting will work fine for both
+
+func (o order) getAmount() float32 {
+	return o.amount
+}
+
 
 func main() {
-	// newCustomer := customer{
-	// 	name:  "john",
-	// 	phone: "1234567890",
+
+	// myOrder := order{
+	// 	id: "12",
+	// 	status: "delivered",
+	// 	amount: 100,
+	// 	createAt: time.Now(),
 	// }
 
-	newOrder := order{
-		id:     "1",
-		amount: 30,
-		status: "received",
-		customer: customer{
-			name:  "john",
-			phone: "1234567890",
-		},
+	// // myOrder.statusChange("confirmed")
+	// // fmt.Println(myOrder)
+
+	// fmt.Println(myOrder.getAmount())
+
+	// if we don't set any field , 
+	// default will be zero value
+	// int -> 0 , float -> 0 , string -> "", bool-> false
+	myOrder := order{
+		// id: "12",
+		// status: "delivered",
+		// amount: 100,
+		// createAt: time.Now(),
 	}
 
-	newOrder.customer.name = "robin"
-	fmt.Println(newOrder)
+	fmt.Println(myOrder)
 
-	// language := struct {
-	// 	name   string
-	// 	isGood bool
-	// }{"golang", true}
-
-	// fmt.Println(language)
-
-	// myOrder := newOrder("1", 30.50, "received")
-	// fmt.Println(myOrder.amount)
-	// if you don't set any field, default value is zero value
-	// int => 0, float => 0, string "", bool => false
-	// myOrder := order{
-	// 	id:     "1",
-	// 	amount: 50.00,
-	// 	status: "received",
-	// }
-	// myOrder.changeStatus("confirmed")
-	// fmt.Println(myOrder)
-	// myOrder.createdAt = time.Now()
-	// fmt.Println(myOrder.status)
-
-	// myOrder2 := order{
-	// 	id:        "2",
-	// 	amount:    100,
-	// 	status:    "delivered",
-	// 	createdAt: time.Now(),
-	// }
-
-	// myOrder.status = "paid"
-
-	// fmt.Println("Order struct", myOrder2)
-	// fmt.Println("Order struct", myOrder)
 }
