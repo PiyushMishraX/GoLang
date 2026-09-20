@@ -21,9 +21,9 @@ import "fmt"
 type OrderStatus string
 const (
 	Received OrderStatus = "received"
-	Confirmed = "confirmed"
-	Prepared = "prepared"
-	Delivered = "delivered"
+	Confirmed            = "confirmed"
+	Prepared             = "prepared"
+	Delivered  			 = "delivered"
 )
 
 
