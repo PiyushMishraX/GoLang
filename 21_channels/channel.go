@@ -2,15 +2,32 @@ package main
 
 import (
 	"fmt"
-	"time"
+	// "math/rand"
+	// "time"
+	// "time"
 )
 
 // communication between goroutines happens through channels
 
 
+// sending
+// func processNum(numChan chan int) {
+// 	// fmt.Println("Processing number", <-numChan)
 
-func processNum(numChan chan int) {
-	fmt.Println("Processing number", <-numChan)
+// 	for num := range numChan {
+// 		fmt.Println("Processing number", num)
+// 		// fmt.Println("Processing number", <-numChan)
+// 		time.Sleep(time.Second * 1)
+
+// 		// queue system can be implemented through this
+// 	}
+// }
+
+
+
+func sum(result chan int, num1 int, num2 int) {
+	numResult := num1 + num2
+	result <- numResult
 
 }
 
@@ -33,15 +50,50 @@ func main() {
 
 
 
-	numChan := make(chan int)
+	// numChan := make(chan int)
 
 	// main is seperate go routine and precessNum is other one
 
-	go processNum(numChan) 
+	// go processNum(numChan) 
+	
 
-	numChan <- 5 // number send to 1 goroutine to other through channel
+	// time.Sleep(time.Second * 2)
+	// fmt.Println("1")
 
-	time.Sleep(time.Second * 2)
+	// numChan <- 5 // number send to 1 goroutine to other through channel
+	
+	// fmt.Println("2")
+	// time.Sleep(time.Second * 2)
+
+
+
+	// we use channels likek queue in out channel
+
+	// numChan := make(chan int)
+
+	// go processNum(numChan)
+
+	// // nunCHan <-5
+	// for { // infinite loop no need for sleep
+	// 	numChan <- rand.Intn(100) // rand num bw 0 and 100
+	// }
+
+	// // time.Sleep(time.Second * 2)
+
+
+
+
+	// receiving
+
+	result := make(chan int)
+
+	go sum(result, 4, 5)
+
+	res := <-result // data receive
+
+	fmt.Println(res)
+
+
 
 
 }
