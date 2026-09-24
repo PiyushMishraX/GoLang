@@ -24,12 +24,23 @@ import (
 // }
 
 
+// receive
+// func sum(result chan int, num1 int, num2 int) {
+// 	numResult := num1 + num2
+// 	result <- numResult
+// }
 
-func sum(result chan int, num1 int, num2 int) {
-	numResult := num1 + num2
-	result <- numResult
 
+// wg work ( holding main function ) using channels
+func task(done chan bool) {
+
+	defer func () { done <- true} ()  // runs after fn running ends
+
+	fmt.Println("Processing...")
+
+	// done<-true // can't reach when errors in b/w
 }
+
 
 
 func main() {
@@ -68,11 +79,8 @@ func main() {
 
 
 	// we use channels likek queue in out channel
-
 	// numChan := make(chan int)
-
 	// go processNum(numChan)
-
 	// // nunCHan <-5
 	// for { // infinite loop no need for sleep
 	// 	numChan <- rand.Intn(100) // rand num bw 0 and 100
@@ -84,15 +92,20 @@ func main() {
 
 
 	// receiving
+	// result := make(chan int)
+	// go sum(result, 4, 5)
+	// res := <-result // data receive // no nned for time sleep because it is blocking ( means this holds the function till the running completes)
 
-	result := make(chan int)
+	// fmt.Println(res)
 
-	go sum(result, 4, 5)
 
-	res := <-result // data receive
+	// wg alternative
 
-	fmt.Println(res)
+	done := make(chan  bool)
+	go task(done)
 
+	<- done // block  //till someone sends data
+	
 
 
 
