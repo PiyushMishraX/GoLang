@@ -32,14 +32,25 @@ import (
 
 
 // wg work ( holding main function ) using channels
-func task(done chan bool) {
+// goroutine synchronizer
+// func task(done chan bool) {
 
-	defer func () { done <- true} ()  // runs after fn running ends
+// 	defer func () { done <- true} ()  // runs after fn running ends
+// 	fmt.Println("Processing...")
+// 	// done<-true // can't reach when errors in b/w
+// }
 
-	fmt.Println("Processing...")
 
-	// done<-true // can't reach when errors in b/w
+
+func emailSender( emailChan chan string, done chan bool) {
+
+	defer func() { done <- true}()
+
+	for email := range emailChan{
+		fmt.Println("Sending email to", email)
+	}
 }
+
 
 
 
@@ -101,11 +112,37 @@ func main() {
 
 	// wg alternative
 
-	done := make(chan  bool)
-	go task(done)
+	// done := make(chan  bool)
+	// go task(done)
 
-	<- done // block  //till someone sends data
-	
+	// <- done // block  //till someone sends data
+	// single goroutine --> use channel
+	// multiple --> use wg 
+
+
+
+	//  problem channel 
+	// send and receive is blocking 
+	// but in such as queue system they are very slow
+	// unbuffered blocking an process
+	// soln -> buffer channel --> can send limited ammount of data without blocking 
+
+	// ex --> email queue system
+	emailChan := make(chan string, 100) // struct
+	// 100 --> buffer size
+	done := make(chan bool)
+
+	for i := 0; i < 100; i++ {
+		emailChan <- ""
+	}
+
+	// emailChan <- "1@example.com"
+	// emailChan <- "2@example.com"
+
+	// fmt.Println(<-emailChan)
+	// fmt.Println(<-emailChan) // no deadlock
+
+	<-done // go routine block
 
 
 
