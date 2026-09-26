@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
+	"time"
 	// "math/rand"
 	// "time"
 	// "time"
 )
 
 // communication between goroutines happens through channels
-
 
 // sending
 // func processNum(numChan chan int) {
@@ -23,13 +23,11 @@ import (
 // 	}
 // }
 
-
 // receive
 // func sum(result chan int, num1 int, num2 int) {
 // 	numResult := num1 + num2
 // 	result <- numResult
 // }
-
 
 // wg work ( holding main function ) using channels
 // goroutine synchronizer
@@ -42,14 +40,38 @@ import (
 
 
 
-func emailSender( emailChan chan string, done chan bool) {
+// func emailSender( emailChan chan string, done chan bool) {
+
+// 	defer func() { done <- true}()
+
+// 	for email := range emailChan{
+// 		fmt.Println("Sending email to", email)
+
+// 		time.Sleep(time.Second) // simulate low time processing of emails
+// 	}
+// }
+// background workers etc are created through channels // above is a worker
+
+
+//  type safety increament 
+// func emailSender( emailChan chan string, done chan bool) {
+func emailSender( emailChan <-chan string, done chan<- bool) {
+	/// recieve only <- , <- send only 
 
 	defer func() { done <- true}()
 
+	// <-done
+	// emailChan <- "email"
+	// the abvoe tasks can be done but should not be  // so creating receive only and send only
+
 	for email := range emailChan{
 		fmt.Println("Sending email to", email)
+		time.Sleep(time.Second) 
 	}
 }
+
+
+
 
 
 
@@ -128,21 +150,55 @@ func main() {
 	// soln -> buffer channel --> can send limited ammount of data without blocking 
 
 	// ex --> email queue system
-	emailChan := make(chan string, 100) // struct
-	// 100 --> buffer size
-	done := make(chan bool)
+	// emailChan := make(chan string, 100) // struct
+	// // 100 --> buffer size
+	// done := make(chan bool)
 
-	for i := 0; i < 100; i++ {
-		emailChan <- ""
+	// go emailSender(emailChan, done) // trigger fn // done synchronization the two go routines 
+
+	// // for i := 0; i < 100; i++ {
+	// for i := 0; i < 10; i++ {
+	// 	emailChan <- fmt.Sprintf("%d@gmail.com", i)
+	// } // non blocking // deadlock at the end // we have to close fn
+	
+
+	// fmt.Println("Done sending")
+
+	// close(emailChan) // the range of worker is set to 10  // this is important
+
+	// // emailChan <- "1@example.com"
+	// // emailChan <- "2@example.com"
+
+	// // fmt.Println(<-emailChan)
+	// // fmt.Println(<-emailChan) // no deadlock
+
+	// <-done // go routine block // range have infinite lock in the worker have so the blocking is for always that why deadlock
+
+
+
+
+	// Multiple channel data send
+	chan1 := make(chan int)
+	chan2 := make(chan string)
+
+	// data send
+	go func() {
+		chan1 <- 10
+	} () // channel not passed but closure used to run // value from parent used and saved
+
+	go func() {
+		chan2 <- "pong"
+	} ()
+
+	// data recive // for loop + select case
+	for i := 0; i < 2; i++ {
+		select {
+		case chan1Val := <-chan1:
+			fmt.Println("received data from chan1", chan1Val)
+		case chan2Val := <-chan2:
+			fmt.Println("received data from chan1", chan2Val)
+		}
 	}
-
-	// emailChan <- "1@example.com"
-	// emailChan <- "2@example.com"
-
-	// fmt.Println(<-emailChan)
-	// fmt.Println(<-emailChan) // no deadlock
-
-	<-done // go routine block
 
 
 
