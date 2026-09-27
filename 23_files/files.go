@@ -3,8 +3,11 @@ package main
 import (
 	// "fmt"
 	// "fmt"
+	"bufio"
+	"fmt"
+	// "io"
 	"os"
-	"strings"
+	// "strings"
 )
 
 // working with files
@@ -117,29 +120,107 @@ func main () {
 	// }
 
 
-	// CREATE A FILE
-	f, err := os.Create("example2.txt")
+	// // CREATE A FILE
+	// f, err := os.Create("example2.txt")
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// defer f.Close()
+
+	// f.WriteString("hi go ")
+	// f.WriteString("very nice language") // append mode 
+	// // everytime the above code execute the file is recreated
+
+	// // replace content
+
+	// content, err := os.ReadFile("example2.txt")
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+
+	// newContent := strings.ReplaceAll(string(content), "very", "IT IS CHANGED")
+
+	// os.WriteFile("example2.txt", []byte(newContent), 0644)
+
+
+
+	// method 2 - to enter data
+	// f, err := os.Create("example2.txt")
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// defer f.Close()
+	// // file is nothing but byte data 
+
+	// bytes := [] byte("golang HELLO") // slice of byte
+	// f.Write(bytes)
+
+
+
+	// reading from a file and adding in another file , 
+	// in straming fashion ( not loadng all data in memory)
+	// READ AND WRITE to another file ( streaming fashion)
+
+	sourceFile, err := os.Open("example.txt")
 	if err != nil {
 		panic(err)
 	}
 
-	defer f.Close()
+	defer sourceFile.Close()
 
-	f.WriteString("hi go ")
-	f.WriteString("very nice language") // append mode 
-	// everytime the above code execute the file is recreated
-
-	// replace content
-
-	content, err := os.ReadFile("example2.txt")
+	destFile, err := os.Create("example3.txt")
 	if err != nil {
 		panic(err)
 	}
 
+	defer destFile.Close()
 
-	newContent := strings.ReplaceAll(string(content), "very", "IT IS CHANGED")
+	// streaming fashion through buf io mehtod
+	
+	reader := bufio.NewReader(sourceFile) //data from reader // newreader returns a reader whose buffer deafult size is 4096 byte
+	writer := bufio.NewWriter(destFile) // writer
 
-	os.WriteFile("example2.txt", []byte(newContent), 0644)
+
+	for { // read byte by byte and write byte by byte in infi loop till EOF
+
+		b, err := reader.ReadByte()
+		if err != nil {
+			//  checking extra err , end of file error
+
+			if err.Error() != "EOF" { // returns error in string format 
+				panic(err)  // if not EOF panic else break from infi loop 
+			}
+
+			// panic(err) // we don't just panic all the time , just writing for the time
+
+			break // break when EOF error occurs so the infi loop ends
+		}
+
+		e := writer.WriteByte(b) // pass byte "b" // the err have to used like x, err to not throw error
+		if e != nil {
+			panic(e)
+		}
+		
+	}
+
+	// flush write for any remainign data at last
+	writer.Flush()
+
+	fmt.Println("Written to new file is successful")
+	// the above is straming fashion file copying
+	// but if we only need to copy we can use copy function , from source to destination file
+
+	// _, err = io.Copy(destFile, sourceFile)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// destFile.Sync()
+
+
+
 
 
 
