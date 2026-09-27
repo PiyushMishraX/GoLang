@@ -1,1 +1,1 @@
-Reposity of GoLand Learning
+Reposity of GoLang Learning
