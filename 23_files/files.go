@@ -45,7 +45,9 @@ func main () {
 	// fmt.Println("file modified at:", fileInfo.ModTime()) 
 
 
-	//  read file
+	
+
+	//  READ FILE
 
 	// f, err := os.Open("example.txt")
 	// if err != nil {
@@ -76,16 +78,44 @@ func main () {
 
 	// read file easier method
 
-	data, err := os.ReadFile("example.txt") 
-	if err != nil { // can abstract this in a function
-		panic(err)
-	}
+	// data, err := os.ReadFile("example.txt") 
+	// if err != nil { // can abstract this in a function
+	// 	panic(err)
+	// }
 
-	fmt.Println(string(data))
-	// we should not use this fn all the time
-	// the ReadFile function loads the file at once in memory the file size when small will be good reading through this mehtod 
-	// but bigger files such as video(GB's of data) should bot load like this , it isn't viable resouces might be less than this
-	// we can use streaming like node js in go too // will see in writing files time 
+	// fmt.Println(string(data))
+	// // we should not use this fn all the time
+	// // the ReadFile function loads the file at once in memory the file size when small will be good reading through this mehtod 
+	// // but bigger files such as video(GB's of data) should bot load like this , it isn't viable resouces might be less than this
+	// // we can use streaming like node js in go too // will see in writing files time 
+
+
+
+
+
+	// READ FOLDERS 
+
+	// // dir, err := os.Open(".") // . current folder
+	// dir, err := os.Open("../") // root 
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// defer dir.Close()
+
+	// // fileInfo, err := dir.ReadDir(1) // read info of DIr and returns slice / list of info 
+	// // (1) // 1 value readed , 2 , 3 have to inputed
+
+	// // fileInfo, err := dir.ReadDir(2) 
+	// // fileInfo, err := dir.ReadDir(3) // still 2
+	// fileInfo, err := dir.ReadDir(-1) // all files 
+
+	// for _, fi := range fileInfo {
+	// 	// fmt.Println(fi.Name())
+	// 	fmt.Println(fi.Name(), fi.IsDir())
+	// }
+
+
 
 
 
