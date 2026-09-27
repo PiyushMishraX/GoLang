@@ -3,10 +3,12 @@ package main
 import (
 	// "fmt"
 	// "fmt"
-	"bufio"
-	"fmt"
+	// "bufio"
+	// "fmt"
 	// "io"
+	"fmt"
 	"os"
+	// "time"
 	// "strings"
 )
 
@@ -49,6 +51,8 @@ func main () {
 	// fmt.Println("file modified at:", fileInfo.ModTime()) 
 
 
+
+	/* < -----------------------------------------------------------------> */
 	
 
 	//  READ FILE
@@ -95,7 +99,7 @@ func main () {
 
 
 
-
+	/* < -----------------------------------------------------------------> */
 
 	// READ FOLDERS 
 
@@ -118,6 +122,9 @@ func main () {
 	// 	// fmt.Println(fi.Name())
 	// 	fmt.Println(fi.Name(), fi.IsDir())
 	// }
+
+
+	/* < -----------------------------------------------------------------> */
 
 
 	// // CREATE A FILE
@@ -159,57 +166,59 @@ func main () {
 	// f.Write(bytes)
 
 
+	/* < -----------------------------------------------------------------> */
+
 
 	// reading from a file and adding in another file , 
 	// in straming fashion ( not loadng all data in memory)
 	// READ AND WRITE to another file ( streaming fashion)
 
-	sourceFile, err := os.Open("example.txt")
-	if err != nil {
-		panic(err)
-	}
+	// sourceFile, err := os.Open("example.txt")
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	defer sourceFile.Close()
+	// defer sourceFile.Close()
 
-	destFile, err := os.Create("example3.txt")
-	if err != nil {
-		panic(err)
-	}
+	// destFile, err := os.Create("example3.txt")
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	defer destFile.Close()
+	// defer destFile.Close()
 
-	// streaming fashion through buf io mehtod
+	// // streaming fashion through buf io mehtod
 	
-	reader := bufio.NewReader(sourceFile) //data from reader // newreader returns a reader whose buffer deafult size is 4096 byte
-	writer := bufio.NewWriter(destFile) // writer
+	// reader := bufio.NewReader(sourceFile) //data from reader // newreader returns a reader whose buffer deafult size is 4096 byte
+	// writer := bufio.NewWriter(destFile) // writer
 
 
-	for { // read byte by byte and write byte by byte in infi loop till EOF
+	// for { // read byte by byte and write byte by byte in infi loop till EOF
 
-		b, err := reader.ReadByte()
-		if err != nil {
-			//  checking extra err , end of file error
+	// 	b, err := reader.ReadByte()
+	// 	if err != nil {
+	// 		//  checking extra err , end of file error
 
-			if err.Error() != "EOF" { // returns error in string format 
-				panic(err)  // if not EOF panic else break from infi loop 
-			}
+	// 		if err.Error() != "EOF" { // returns error in string format 
+	// 			panic(err)  // if not EOF panic else break from infi loop 
+	// 		}
 
-			// panic(err) // we don't just panic all the time , just writing for the time
+	// 		// panic(err) // we don't just panic all the time , just writing for the time
 
-			break // break when EOF error occurs so the infi loop ends
-		}
+	// 		break // break when EOF error occurs so the infi loop ends
+	// 	}
 
-		e := writer.WriteByte(b) // pass byte "b" // the err have to used like x, err to not throw error
-		if e != nil {
-			panic(e)
-		}
+	// 	e := writer.WriteByte(b) // pass byte "b" // the err have to used like x, err to not throw error
+	// 	if e != nil {
+	// 		panic(e)
+	// 	}
 		
-	}
+	// }
 
-	// flush write for any remainign data at last
-	writer.Flush()
+	// // flush write for any remainign data at last
+	// writer.Flush()
 
-	fmt.Println("Written to new file is successful")
+	// fmt.Println("Written to new file is successful")
 	// the above is straming fashion file copying
 	// but if we only need to copy we can use copy function , from source to destination file
 
@@ -217,7 +226,38 @@ func main () {
 	// if err != nil {
 	// 	panic(err)
 	// }
-	// destFile.Sync()
+	// destFile.Sync() 
+
+
+	// bufio is inbuit  in go 
+
+
+
+	/* < -----------------------------------------------------------------> */
+
+	// DELETE A FILE
+
+	// sourceFile, err := os.Create("example4.txt")
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// defer sourceFile.Close()
+
+	// time.Sleep(time.Second * 4 )
+	// cann't do above and below simultaneously like this
+
+	//  one line method -> // os.Remove("example4.txt")
+	e := os.Remove("example4.txt") // in go errors are returned not shown which is differnent than other languages
+	if e != nil {
+		panic(e)
+	}
+
+	fmt.Println("file deleted successfully")
+
+	// there are more adavanced things realted to files in docs
+
+
 
 
 
