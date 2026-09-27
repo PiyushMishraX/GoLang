@@ -2,8 +2,9 @@ package main
 
 import (
 	// "fmt"
-	"fmt"
+	// "fmt"
 	"os"
+	"strings"
 )
 
 // working with files
@@ -114,6 +115,31 @@ func main () {
 	// 	// fmt.Println(fi.Name())
 	// 	fmt.Println(fi.Name(), fi.IsDir())
 	// }
+
+
+	// CREATE A FILE
+	f, err := os.Create("example2.txt")
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
+
+	f.WriteString("hi go ")
+	f.WriteString("very nice language") // append mode 
+	// everytime the above code execute the file is recreated
+
+	// replace content
+
+	content, err := os.ReadFile("example2.txt")
+	if err != nil {
+		panic(err)
+	}
+
+
+	newContent := strings.ReplaceAll(string(content), "very", "IT IS CHANGED")
+
+	os.WriteFile("example2.txt", []byte(newContent), 0644)
 
 
 
