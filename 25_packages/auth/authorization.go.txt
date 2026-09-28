@@ -1,0 +1,6 @@
+// package auth
+
+
+// func some(){
+// 	loginWithCredentials( "name", "1234" ) // the func is within scope // withing same package
+// }
