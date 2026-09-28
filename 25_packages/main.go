@@ -12,10 +12,35 @@
 
 package main
 
-import "github.com/piyushmishrax/golang/auth"
+import (
+	"github.com/fatih/color"
+	"github.com/piyushmishrax/golang/user"
+)
+
+// "fmt"
+// "os/user" // no this one
+
+//  using open source package
+//  github.com/fatih/color
+// go get github.com/fatih/color
 
 func main() {
-	auth.LoginWithCredentials("piyush", "password")
+	// auth.LoginWithCredentials("piyush", "password")
+
+	// session := auth.GetSession()
+
+	// fmt.Println(session)
+
+	user := user.User{
+		Email: "user@email.com",
+		Name:  "User",
+	}
+	// fmt.Println(user)
+	// fmt.Println(user.Email, user.Name)
+
+	color.Red(user.Email)
+	color.Blue(user.Name)
+
 
 
 }
